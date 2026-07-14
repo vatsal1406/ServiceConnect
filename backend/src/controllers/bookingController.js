@@ -91,7 +91,7 @@ export const getVendorBookings = async (req, res) => {
             type: "Point",
             coordinates: [vendorLng, vendorLat],
           },
-          $maxDistance: 10000 // ✅ 10 km
+          $maxDistance: 100000 // ✅ 10 km
         }
       }
     })

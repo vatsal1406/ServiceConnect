@@ -1,3 +1,4 @@
+import http from "http";
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -10,6 +11,7 @@ import userRoutes from "./routes/userRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 import cron from 'node-cron';
 import Service from './models/Service.js';
+import { Server } from "socket.io";
 
 // Load env variables
 dotenv.config();
@@ -18,6 +20,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+const server = http.createServer(app);
 
 // Middleware
 app.use(express.json());
@@ -26,6 +29,19 @@ app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
 }));
+
+
+{/*io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  socket.on("send_message", (data) => {
+    io.emit("receive_message", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});*/}
 
 cron.schedule('0 0 * * *', async () => { // runs daily at midnight
   console.log('Running offer expiry check...');
@@ -36,6 +52,7 @@ cron.schedule('0 0 * * *', async () => { // runs daily at midnight
     validTill: { $lt: now },
     isOfferActive: true
   });
+
 
   for (let service of services) {
     service.isOfferActive = false;
