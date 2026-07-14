@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://serviceconnect-a0yr.onrender.com',
+  baseURL: 'https://serviceconnect-a0yr.onrender.com/api',
   withCredentials: true
 });
 
